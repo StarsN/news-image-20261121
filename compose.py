@@ -200,8 +200,9 @@ y = text_block(draw, MX, y,
                     "missiles land in Poland", SERIF_B(40), W - 2 * MX),
                SERIF_B(40), leading=45)
 y += 4
-lead_scene(draw, MX, y, W - 2 * MX, 88)
-y += 88 + 8
+SCENE_H = 88
+lead_scene(draw, MX, y, W - 2 * MX, SCENE_H)
+y += SCENE_H + 8
 y = text_block(draw, MX, y,
                wrap(draw,
                     "More than 400 drones and 110 missiles hit Ukraine "
@@ -241,7 +242,7 @@ CARDS = [
      "Protests spread across 25 European countries.", icon_crowd),
 ]
 cw = (W - 2 * MX - 20) // 2
-ch = 132
+ch = 132  # story card height, fixed so the page fits
 for i, (kick, head, deck, icon) in enumerate(CARDS):
     cx = MX + (i % 2) * (cw + 20)
     cy = y + (i // 2) * (ch + 10)
@@ -270,14 +271,14 @@ y = text_block(draw, MX, y,
                     "6.9 earthquake  •  GTA VI sets a $3.8bn first-day record  •  "
                     "Bitcoin slides toward $62,000 as $2bn of crypto is liquidated",
                     SANS(15), W - 2 * MX),
-               SANS(15), leading=19)
+               SANS(15), leading=19)  # tight leading keeps the band on the page
 rule(draw, MX, W - MX, H - 26, width=1)
 draw.text((W // 2, H - 22),
           "Saturday 21 November 2026  ·  Every story first reported on this day",
           font=SANS(12), fill=GREY, anchor="ma")
 
 print("layout: also-band ends at y =", y, " (page height", H, ")")
-assert y <= H - 26, "layout overflow: also-band ends at %d" % y
+assert y <= H - 26, "layout overflow: also-band ends past the footer"
 
 img.save("entry.png", format="PNG", optimize=True)
 print("wrote entry.png", os.path.getsize("entry.png"), "bytes", img.size)
